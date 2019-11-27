@@ -9,9 +9,10 @@ section .data
     greeting_len equ $-greeting
     prefix db "You typed: ", 0x0A
     prefix_len equ $-prefix
+    buf_len equ 0x0F
 
 section .bss
-   input_buffer     resb 0x0F              ; 5-byte buffer (in data section)
+   input_buffer     resb buf_len 
 
 section .text
 _start:
@@ -25,7 +26,7 @@ _start:
     mov eax, 0x03               ; write syscall
     mov ebx, 0x00               ; stdin file descriptor
     mov ecx, input_buffer       ; buffer to be written
-    mov edx, 0x0F    ; buffer length
+    mov edx, buf_len    ; buffer length
     int 0x80
 
     mov eax, 0x04               ; write syscall
@@ -38,7 +39,7 @@ _start:
     mov eax, 0x04               ; write syscall
     mov ebx, 0x01               ; stdout file descriptor
     mov ecx, input_buffer           ; message content
-    mov edx, 0x0F        ; message length
+    mov edx, buf_len        ; message length
     int 0x80                    ; call kernel
  
 
